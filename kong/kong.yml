@@ -1,0 +1,39 @@
+_format_version: "2.1"
+
+
+
+services:
+  - name: test-api-service-1
+    host: api_service_1
+    path: /
+    port: 8000
+    routes:
+      - name: route-service-1
+        hosts: 
+          - api_service_1
+          - localhost
+        methods:
+            - GET
+        paths:
+          - /service/1/
+        strip_path: true
+  
+  - name: test-api-service-2
+    host: api_service_2
+    path: /
+    port: 8000
+    routes:
+      - name: route-service-2
+        hosts: 
+          - api_service_2
+          - localhost
+        methods:
+            - GET
+        paths:
+          - /service/2/
+        strip_path: true
+
+
+
+
+ 

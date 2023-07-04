@@ -1,0 +1,56 @@
+version: '3.9'
+
+services:
+
+  # defining the name of the service
+  kong:
+
+    # defining the image we want to use as base
+    image: kong:3.1.1-alpine
+    
+    # defingin container name
+    container_name: kong
+
+    # implementing the config for db less configs
+    volumes:
+      - ./kong/kong.yml:/usr/local/kong/declarative/kong.yml
+
+    # declaring the environment variables 
+    environment:
+      - KONG_DATABASE=off
+      - KONG_DECLARATIVE_CONFIG=/usr/local/kong/declarative/kong.yml
+      - KONG_PROXY_ACCESS_LOG=/dev/stdout
+      - KONG_ADMIN_ACCESS_LOG=/dev/stdout
+      - KONG_PROXY_ERROR_LOG=/dev/stderr
+      - KONG_ADMIN_ERROR_LOG=/dev/stderr
+      - KONG_ADMIN_LISTEN=0.0.0.0:8001
+
+    # outer ports
+    ports:
+      - "80:8000"
+      - "8001:8001"
+
+  api_service_1:
+    build: 
+      context: ./apps/service1
+      dockerfile: ./Dockerfile
+    container_name: api_service_1
+    command: sh -c "uvicorn main:app --host 0.0.0.0 --port 8000"
+    volumes:
+      - ./apps/service1/main.py:/user/src/main.py
+    expose:
+      - 8000
+
+
+  api_service_2:
+    build: 
+      context: ./apps/service2
+      dockerfile: ./Dockerfile
+    container_name: api_service_2
+    command: sh -c "uvicorn main:app --host 0.0.0.0 --port 8000"
+    volumes:
+      - ./apps/service2/main.py:/user/src/main.py
+    expose:
+      - 8000
+
+
