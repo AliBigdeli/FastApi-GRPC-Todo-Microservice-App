@@ -59,6 +59,7 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@postgres-db/postgres
     depends_on:
       - postgres-db
+    restart: on-failure
 
   todo_grpc:
     container_name: todo_grpc
@@ -71,6 +72,7 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@postgres-db/postgres
     depends_on:
       - postgres-db
+    restart: on-failure
 
 
 
