@@ -13,14 +13,15 @@ WORKDIR /usr/src/app
 COPY ./requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Compile the gRPC protobuf files
-# RUN python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. todo.proto
 
 # Expose the gRPC port
 EXPOSE $PORT
 
 # Copy the program source files
 COPY ./app .
+
+# Compile the gRPC protobuf files
+RUN python -m grpc_tools.protoc -I ./protobuf --python_out=. --grpc_python_out=. todo.proto
 
 # Start the gRPC server
 CMD [ "python", "main.py" ]
