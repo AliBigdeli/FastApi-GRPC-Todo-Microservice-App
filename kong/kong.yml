@@ -10,8 +10,6 @@ services:
         hosts: 
           - todo_api
           - localhost
-        methods:
-            - GET
         paths:
           - /todo/
         strip_path: true

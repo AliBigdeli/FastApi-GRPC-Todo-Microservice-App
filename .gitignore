@@ -152,4 +152,4 @@ cython_debug/
 #.idea/
 
 #postgres db data directory
-postgres/data/*
+postgre/data/*
