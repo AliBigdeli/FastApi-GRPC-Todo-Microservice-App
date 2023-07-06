@@ -29,28 +29,48 @@ services:
     ports:
       - "80:8000"
       - "8001:8001"
+  
+  postgres-db:
+    container_name: postgres-db
+    image: postgres:15-alpine
+    volumes:
+      - ./postgre/data:/var/lib/postgresql/data
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
 
-  api_service_1:
+
+    restart: always
+
+  todo_api:
     build: 
-      context: ./apps/service1
+      context: ./services/todo-api
       dockerfile: ./Dockerfile
-    container_name: api_service_1
+    container_name: todo_api
     command: sh -c "uvicorn main:app --host 0.0.0.0 --port 8000"
     volumes:
-      - ./apps/service1/main.py:/user/src/main.py
+      - ./services/todo-api/main.py:/user/src/main.py
     expose:
       - 8000
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres-db/postgres
+    depends_on:
+      - postgres-db
 
-
-  api_service_2:
+  todo_grpc:
+    container_name: todo_grpc
     build: 
-      context: ./apps/service2
+      context: ./services/todo-grpc
       dockerfile: ./Dockerfile
-    container_name: api_service_2
-    command: sh -c "uvicorn main:app --host 0.0.0.0 --port 8000"
-    volumes:
-      - ./apps/service2/main.py:/user/src/main.py
     expose:
-      - 8000
+      - 50051
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres-db/postgres
+    depends_on:
+      - postgres-db
+
 
 

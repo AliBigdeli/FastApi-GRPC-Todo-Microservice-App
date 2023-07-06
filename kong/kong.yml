@@ -1,38 +1,21 @@
 _format_version: "2.1"
 
-
-
 services:
-  - name: test-api-service-1
-    host: api_service_1
+  - name: todo-api-service
+    host: todo_api
     path: /
     port: 8000
     routes:
-      - name: route-service-1
+      - name: todo-routes
         hosts: 
-          - api_service_1
+          - todo_api
           - localhost
         methods:
             - GET
         paths:
-          - /service/1/
+          - /todo/
         strip_path: true
   
-  - name: test-api-service-2
-    host: api_service_2
-    path: /
-    port: 8000
-    routes:
-      - name: route-service-2
-        hosts: 
-          - api_service_2
-          - localhost
-        methods:
-            - GET
-        paths:
-          - /service/2/
-        strip_path: true
-
 
 
 
