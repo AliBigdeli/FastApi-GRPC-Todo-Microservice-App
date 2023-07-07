@@ -68,6 +68,7 @@ services:
       dockerfile: ./Dockerfile
     expose:
       - 50051
+    command: sh -c "python main.py"
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@postgres-db/postgres
     depends_on:

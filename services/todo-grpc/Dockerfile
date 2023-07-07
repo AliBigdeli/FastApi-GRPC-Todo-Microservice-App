@@ -24,4 +24,4 @@ COPY ./app .
 RUN python -m grpc_tools.protoc -I ./protobuf --python_out=. --grpc_python_out=. todo.proto
 
 # Start the gRPC server
-CMD [ "python", "main.py" ]
+# CMD [ "python", "main.py" ]
