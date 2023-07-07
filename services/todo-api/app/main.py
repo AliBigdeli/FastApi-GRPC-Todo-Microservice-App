@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from google.protobuf.json_format import MessageToJson
 import grpc
@@ -57,13 +57,27 @@ def create_todo(title: str, description: str):
 @app.get("/todos/{todo_id}")
 def read_todo(todo_id: int):
     # Read a Todo by ID using the gRPC stub
-    response = stub.Read(TodoRequest(id=todo_id))
+    try:
+        response = stub.Read(TodoRequest(id=todo_id))
+    
+    except grpc.RpcError as e:
+        if e.code() == grpc.StatusCode.NOT_FOUND:
+            raise HTTPException(status_code=404, detail='Todo not found')
     # Convert the gRPC response message to JSON and return it
     return JSONResponse(content=json.loads(MessageToJson(response)))
 
 
 @app.put("/todos/{todo_id}")
 def update_todo(todo_id: int, title: str = None, description: str = None, done: bool = None):
+    
+    # Check if the Todo object with the given ID exists
+    try:
+        response = stub.Read(TodoRequest(id=todo_id))
+    
+    except grpc.RpcError as e:
+        if e.code() == grpc.StatusCode.NOT_FOUND:
+            raise HTTPException(status_code=404, detail='Todo not found')
+    
     # Build a TodoRequest message with the updated fields
     update_fields = {}
     if title is not None:
