@@ -151,7 +151,7 @@ app. Visit <http://localhost/todo/swagger> in your favorite browser.
 something on your machine is already running on port 8000. then you have to change the docker-compose.yml file according to your needs.
 
 # Schema
-<div align="center" ><img loading="lazy" style="width:700px" src="./docs/schema.png"></div>
+<div align="center" ><img loading="lazy" style="width:400px" src="./docs/schema.png"></div>
 
 
 # what is Kong?
